@@ -1,24 +1,664 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meine erste automatische Webseite</title>
-  <style>
-    body { margin:0; font-family: system-ui, sans-serif; background:#0f172a;
-      color:#e2e8f0; display:flex; min-height:100vh; align-items:center;
-      justify-content:center; text-align:center; }
-    h1 { font-size:2rem; margin-bottom:.5rem; }
-    p { color:#94a3b8; }
-    .badge { display:inline-block; margin-top:1.5rem; padding:.5rem 1rem;
-      background:#1e293b; border-radius:999px; font-size:.9rem; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[DEIN STUDIONAME] | High-End Webdesign & Sorgenfreie Betreuung</title>
+    <meta name="description" content="Premium-Websites für KMU und Selbstständige in Deutschland. Konzept, Design, Go-Live und dauerhaftes Care-Abo für maximale Sicherheit und Performance.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            indigo: '#4F46E5',
+                            electric: '#6366F1',
+                            dark: '#090D16',
+                            muted: '#64748B',
+                            light: '#F8FAFC'
+                        }
+                    },
+                    animation: {
+                        'marquee': 'marquee 30s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Grain / Noise Overlay Texture */
+        .bg-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3e%3cfilter id='noiseFilter'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.025'/%3e%3c/svg%3e");
+        }
+        
+        /* Aurora Glow Gradient */
+        .aurora-glow {
+            background: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 50%);
+        }
+
+        /* Scroll-Reveal Base States */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
-<body>
-  <div>
-    <h1>🚀 Es läuft!</h1>
-    <p>Diese Seite hat sich selbst veröffentlicht.</p>
-    <div class="badge">Version 2 – automatisch!!! - Merlin ist ein kleiner Hund ! 🚀</div>
-  </div>
+<body class="font-sans bg-brand-light text-brand-dark antialiased overflow-x-hidden selection:bg-brand-electric selection:text-white">
+
+    <header x-data="{ mobileMenuOpen: false, scrolled: false }" 
+            @scroll.window="scrolled = (window.pageYOffset > 20) ? true : false"
+            :class="scrolled ? 'bg-brand-dark/90 backdrop-blur-md border-b border-white/10 py-4' : 'bg-transparent py-6'"
+            class="fixed top-0 left-0 w-full z-50 transition-all duration-300 text-white">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="font-display text-xl font-extrabold tracking-tight hover:opacity-80 transition-opacity">
+                [DEIN <span class="text-brand-electric">STUDIONAME</span>]
+            </a>
+            
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <a href="#loesung" class="hover:text-brand-electric transition-colors">Vorteile</a>
+                <a href="#leistungen" class="hover:text-brand-electric transition-colors">Leistungen</a>
+                <a href="#ablauf" class="hover:text-brand-electric transition-colors">Ablauf</a>
+                <a href="#pakete" class="hover:text-brand-electric transition-colors">Preise</a>
+                <a href="#faq" class="hover:text-brand-electric transition-colors">FAQ</a>
+            </nav>
+
+            <div class="hidden md:flex items-center">
+                <a href="#kontakt" class="relative group overflow-hidden rounded-full bg-brand-electric px-6 py-2.5 text-sm font-semibold shadow-md transition-transform duration-300 hover:scale-105">
+                    <span class="relative z-10">Projekt starten</span>
+                    <div class="absolute inset-0 -translate-x-full bg-white/20 transition-transform duration-300 group-hover:translate-x-0"></div>
+                </a>
+            </div>
+
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-white hover:text-brand-electric transition-colors focus:outline-none">
+                <i data-lucide="menu" x-show="!mobileMenuOpen" class="w-6 h-6"></i>
+                <i data-lucide="x" x-show="mobileMenuOpen" class="w-6 h-6" x-cloak></i>
+            </button>
+        </div>
+
+        <div x-show="mobileMenuOpen" x-transition 
+             class="md:hidden absolute top-full left-0 w-full bg-brand-dark border-b border-white/10 px-6 py-8 space-y-6 flex flex-col text-lg font-medium" x-cloak>
+            <a href="#loesung" @click="mobileMenuOpen = false" class="hover:text-brand-electric transition-colors">Vorteile</a>
+            <a href="#leistungen" @click="mobileMenuOpen = false" class="hover:text-brand-electric transition-colors">Leistungen</a>
+            <a href="#ablauf" @click="mobileMenuOpen = false" class="hover:text-brand-electric transition-colors">Ablauf</a>
+            <a href="#pakete" @click="mobileMenuOpen = false" class="hover:text-brand-electric transition-colors">Preise</a>
+            <a href="#faq" @click="mobileMenuOpen = false" class="hover:text-brand-electric transition-colors">FAQ</a>
+            <a href="#kontakt" @click="mobileMenuOpen = false" class="w-full text-center rounded-full bg-brand-electric py-3 text-sm font-semibold">Projekt starten</a>
+        </div>
+    </header>
+
+    <section class="relative bg-brand-dark text-white min-h-screen flex items-center pt-32 pb-20 overflow-hidden bg-grain aurora-glow">
+        <div class="max-w-7xl mx-auto px-6 w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-8 space-y-8">
+                <span class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-electric">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Plätze frei für diesen Monat
+                </span>
+                <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
+                    Websites, die für dich <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-electric to-indigo-400">verkaufen</span> – nicht nur existieren.
+                </h1>
+                <p class="text-slate-400 text-lg sm:text-xl max-w-2xl font-light leading-relaxed">
+                    Wir entwickeln High-End-Websites für deutsche KMU, Handwerker und Dienstleister. Vollständig optimiert, rechtssicher und ab dem ersten Tag auf Autopilot. Wir bauen – und pflegen deine Seite dauerhaft.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="#kontakt" class="group flex items-center justify-center gap-2 rounded-full bg-brand-electric px-8 py-4 font-bold shadow-lg shadow-brand-electric/20 transition-all hover:bg-brand-indigo hover:translate-y-[-2px]">
+                        Projekt anfragen
+                        <i data-lucide="arrow-right" class="w-5 h-5 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                    <a href="#pakete" class="flex items-center justify-center rounded-full bg-white/5 border border-white/10 px-8 py-4 font-bold transition-all hover:bg-white/10">
+                        Pakete ansehen
+                    </a>
+                </div>
+                <div class="pt-6 border-t border-white/5 flex flex-wrap gap-x-8 gap-y-3 text-xs tracking-wide text-slate-400 font-medium">
+                    <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> 100% DSGVO-konform</span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="zap" class="w-4 h-4 text-emerald-400"></i> Premium-Hosting & Pflege inklusive</span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4 text-emerald-400"></i> Aus Deutschland</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-brand-dark/95 border-y border-white/5 py-12 overflow-hidden relative z-10 text-white">
+        <div class="max-w-7xl mx-auto px-6 mb-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="reveal">
+                <div class="font-display text-4xl md:text-5xl font-black text-brand-electric mb-2"><span class="counter" data-target="140">0</span>+</div>
+                <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">Erfolgreiche Projekte</p>
+            </div>
+            <div class="reveal">
+                <div class="font-display text-4xl md:text-5xl font-black text-brand-electric mb-2"><span class="counter" data-target="12">0</span> Tagen</div>
+                <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">Ø Zeit bis zum Go-Live</p>
+            </div>
+            <div class="reveal">
+                <div class="font-display text-4xl md:text-5xl font-black text-brand-electric mb-2"><span class="counter" data-target="100">0</span>%</div>
+                <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">Rechtssicher (DSGVO)</p>
+            </div>
+            <div class="reveal">
+                <div class="font-display text-4xl md:text-5xl font-black text-brand-electric mb-2"><span class="counter" data-target="5">0</span>.0★</div>
+                <p class="text-xs uppercase tracking-widest text-slate-400 font-bold">Google-Bewertung</p>
+            </div>
+        </div>
+
+        <div class="relative w-full flex overflow-x-hidden border-t border-white/5 pt-8 opacity-40">
+            <div class="animate-marquee whitespace-nowrap flex space-x-16 text-xl tracking-widest font-display font-bold uppercase text-slate-500">
+                <span>• BAUUNTERNEHMEN SCHMIDT</span> <span>• ARCHITEKTUR BÜRO MÜLLER</span> <span>• DR. MED. FISCHER</span> <span>• KANZLEI WAGNER</span> <span>• PHYSIO VITAL</span>
+                <span>• BAUUNTERNEHMEN SCHMIDT</span> <span>• ARCHITEKTUR BÜRO MÜLLER</span> <span>• DR. MED. FISCHER</span> <span>• KANZLEI WAGNER</span> <span>• PHYSIO VITAL</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="loesung" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+            <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Das Problem & Die Lösung</span>
+            <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight mt-3 mb-6">
+                Schluss mit Agentur-Frust und Technik-Chaos.
+            </h2>
+            <p class="text-brand-muted text-lg font-light">
+                Viele Websites scheitern, weil sie entweder veraltet sind oder niemand die Updates macht. Wir brechen diesen Kreislauf auf.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300 group reveal">
+                <div class="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="frown" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Die klassische Website</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">
+                    Teuer in der Anschaffung, nach dem Launch direkt sich selbst überlassen. Plugins veralten, Ladezeiten sinken und Sicherheitslücken entstehen.
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm hover:shadow-md transition-all duration-300 group reveal">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500 mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="clock" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Die "Baukasten"-Falle</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">
+                    Du verbringst kostbare Wochenenden mit Systemen wie Wix oder Jimdo, nur um festzustellen, dass das Design unprofessionell wirkt und keine Kunden bringt.
+                </p>
+            </div>
+
+            <div class="bg-brand-dark text-white rounded-3xl p-8 border border-white/5 shadow-xl group reveal relative overflow-hidden bg-grain">
+                <div class="absolute -right-8 -top-8 w-24 h-24 bg-brand-electric/10 rounded-full blur-xl"></div>
+                <div class="w-12 h-12 rounded-2xl bg-brand-electric flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">Der [DEIN STUDIONAME] Weg</h3>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    Du erhältst eine maßgeschneiderte, verkaufsoptimierte Premium-Website. Um Updates, Hosting, Backups und Textänderungen kümmern wir uns im Hintergrund. Vollkommen sorgenfrei.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="leistungen" class="py-24 bg-slate-100 border-y border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="mb-16 reveal">
+                <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Leistungsspektrum</span>
+                <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight mt-3">Ein starkes digitales Fundament.</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="md:col-span-2 bg-white rounded-3xl p-8 lg:p-10 border border-slate-200/60 shadow-sm flex flex-col justify-between group reveal">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-brand-indigo mb-6"><i data-lucide="layout" class="w-6 h-6"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">Verkaufspsychologisches Webdesign</h3>
+                        <p class="text-brand-muted max-w-xl text-sm leading-relaxed">
+                            Wir gestalten Webseiten nach modernsten UI/UX-Standards. Deine Besucher werden logisch und emotional zur Kontaktaufnahme oder Buchung geführt. Keine Standard-Templates, sondern maßgeschneiderte digitale Identitäten.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap gap-3 text-xs font-semibold text-brand-muted">
+                        <span class="bg-slate-100 px-3 py-1.5 rounded-full">Editorialer Stil</span>
+                        <span class="bg-slate-100 px-3 py-1.5 rounded-full">Mobile First Layouts</span>
+                        <span class="bg-slate-100 px-3 py-1.5 rounded-full">Interaktive Erlebnisse</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col justify-between group reveal">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-brand-indigo mb-6"><i data-lucide="search" class="w-6 h-6"></i></div>
+                        <h3 class="text-xl font-bold mb-3">SEO-Grundoptimierung</h3>
+                        <p class="text-brand-muted text-sm leading-relaxed">
+                            Was nützt die schönste Webseite, wenn sie niemand findet? Wir strukturieren deine Seite so, dass Google sie versteht und du bei lokalen Suchanfragen direkt sichtbar wirst.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col justify-between group reveal">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-brand-indigo mb-6"><i data-lucide="zap" class="w-6 h-6"></i></div>
+                        <h3 class="text-xl font-bold mb-3">Maximale Performance</h3>
+                        <p class="text-brand-muted text-sm leading-relaxed">
+                            Ladezeiten von über zwei Sekunden kosten bares Geld. Unsere saubere Code-Architektur sorgt für exzellente Pagespeed-Werte auf Mobilgeräten und Desktops.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 bg-white rounded-3xl p-8 lg:p-10 border border-slate-200/60 shadow-sm flex flex-col justify-between group reveal">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-brand-indigo mb-6"><i data-lucide="lock" class="w-6 h-6"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">Rechtssicherheit & Laufendes Monitoring</h3>
+                        <p class="text-brand-muted max-w-xl text-sm leading-relaxed">
+                            Abmahnungen wegen falscher Cookie-Banner oder fehlender Impressums-Pflichten blockieren dein Business. Wir implementieren absolut rechtssichere Cookie-Consent-Lösungen und halten Datenschutzerklärungen dynamisch auf dem neuesten Stand.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap gap-3 text-xs font-semibold text-brand-muted">
+                        <span class="bg-slate-100 px-3 py-1.5 rounded-full">100% DSGVO-konform</span>
+                        <span class="bg-slate-100 px-3 py-1.5 rounded-full">Automatisierte Updates</span>
+                        <span class="bg-slate-100 px-3 py-1.5 rounded-full">Tägliche Backups</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="ablauf" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+            <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Der Ablauf</span>
+            <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight mt-3 mb-6">In 4 Schritten zu deiner Wunschseite</h2>
+            <p class="text-brand-muted text-lg font-light">Einfach, strukturiert und ohne kompliziertes Fachjargon.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            <div class="relative group reveal">
+                <div class="font-display text-6xl font-black text-slate-200 mb-4 transition-colors group-hover:text-brand-electric/20">01</div>
+                <h3 class="text-lg font-bold mb-2">Erstgespräch</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">Wir analysieren deine Zielgruppe und klären strategische Fragen vollkommen unverbindlich.</p>
+            </div>
+            
+            <div class="relative group reveal">
+                <div class="font-display text-6xl font-black text-slate-200 mb-4 transition-colors group-hover:text-brand-electric/20">02</div>
+                <h3 class="text-lg font-bold mb-2">Konzept & Design</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">Du erhältst ein auf dich angepasstes, modernes Design-Konzept zur ersten Freigabe.</p>
+            </div>
+
+            <div class="relative group reveal">
+                <div class="font-display text-6xl font-black text-slate-200 mb-4 transition-colors group-hover:text-brand-electric/20">03</div>
+                <h3 class="text-lg font-bold mb-2">Umsetzung</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">Wir programmieren die Seite extrem schnell, binden alle Formulare ein und testen auf allen Endgeräten.</p>
+            </div>
+
+            <div class="relative group reveal">
+                <div class="font-display text-6xl font-black text-slate-200 mb-4 transition-colors group-hover:text-brand-electric/20">04</div>
+                <h3 class="text-lg font-bold mb-2">Betreuung</h3>
+                <p class="text-brand-muted text-sm leading-relaxed">Deine Seite geht online. Ab jetzt greift unser Care-Schutz: Updates, Backups und Inhaltsänderungen laufen auf Autopilot.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pakete" class="py-24 bg-slate-900 text-white bg-grain border-t border-white/5 relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+                <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Das Fundament</span>
+                <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight mt-3 mb-6">Einmalige Setup-Pakete</h2>
+                <p class="text-slate-400 text-lg font-light">Finde genau die Basis, die perfekt zu deiner aktuellen Unternehmensgröße passt.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col justify-between transition-transform duration-300 hover:translate-y-[-4px] reveal">
+                    <div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Starter</h3>
+                        <p class="text-sm text-slate-400 mb-6">Für Selbstständige & kleine Betriebe, die online endlich professionell sichtbar sein wollen.</p>
+                        <div class="mb-6"><span class="text-4xl font-black font-display">899 €</span> <span class="text-xs text-slate-400">zzgl. MwSt.</span></div>
+                        <ul class="space-y-4 text-sm text-slate-300 border-t border-white/10 pt-6">
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Hochwertige One-Page-Website</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Mobil-optimiert & extrem schnell</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Kontaktformular & Google Maps Anbindung</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> DSGVO-konformes Grundsetup</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Go-Live in ca. 7 Tagen</li>
+                        </ul>
+                    </div>
+                    <a href="#kontakt" class="mt-8 block w-full text-center py-3.5 px-6 rounded-full bg-white/10 text-sm font-bold tracking-wide hover:bg-white/20 transition-colors">Auswählen</a>
+                </div>
+
+                <div class="bg-brand-dark border-2 border-brand-electric rounded-3xl p-8 flex flex-col justify-between shadow-2xl relative transition-transform duration-300 hover:translate-y-[-4px] reveal lg:scale-105 z-10">
+                    <span class="absolute top-0 right-8 -translate-y-1/2 bg-brand-electric text-white text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full shadow-md">Beliebt</span>
+                    <div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Business</h3>
+                        <p class="text-sm text-slate-400 mb-6">Für wachsende Unternehmen, die planbar neue Kunden über ihre Website gewinnen wollen.</p>
+                        <div class="mb-6"><span class="text-4xl font-black font-display text-brand-electric">1.890 €</span> <span class="text-xs text-slate-400">zzgl. MwSt.</span></div>
+                        <ul class="space-y-4 text-sm text-slate-300 border-t border-white/10 pt-6">
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-electric flex-shrink-0"></i> Mehrseitige Website (bis zu 5 Seiten)</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-electric flex-shrink-0"></i> Individuelles High-End-Design</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-electric flex-shrink-0"></i> Lokale SEO-Grundoptimierung</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-electric flex-shrink-0"></i> Dynamische Animationen & Interaktionen</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-electric flex-shrink-0"></i> Content-Einpflege & Video-Schulung</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-brand-electric flex-shrink-0"></i> Go-Live in ca. 14 Tagen</li>
+                        </ul>
+                    </div>
+                    <a href="#kontakt" class="mt-8 block w-full text-center py-3.5 px-6 rounded-full bg-brand-electric text-sm font-bold tracking-wide hover:bg-brand-indigo transition-colors shadow-lg shadow-brand-electric/30">Auswählen</a>
+                </div>
+
+                <div class="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col justify-between transition-transform duration-300 hover:translate-y-[-4px] reveal">
+                    <div>
+                        <h3 class="font-display text-2xl font-bold mb-2">Premium</h3>
+                        <p class="text-sm text-slate-400 mb-6">Für etablierte Marken, die digital die unangefochtene Nummer 1 in ihrer Region werden wollen.</p>
+                        <div class="mb-6"><span class="text-4xl font-black font-display">3.900 €</span> <span class="text-xs text-slate-400">zzgl. MwSt.</span></div>
+                        <ul class="space-y-4 text-sm text-slate-300 border-t border-white/10 pt-6">
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Maßgeschneidertes Premium-Design</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> 3D- / WebGL-Animationen</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Erweiterte Performance-Architektur</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Conversion-optimierte Seitenstruktur</li>
+                            <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i> Persönliche Betreuung mit Priorität</li>
+                        </ul>
+                    </div>
+                    <a href="#kontakt" class="mt-8 block w-full text-center py-3.5 px-6 rounded-full bg-white/10 text-sm font-bold tracking-wide hover:bg-white/20 transition-colors">Auswählen</a>
+                </div>
+            </div>
+
+            <div class="mt-16 text-center max-w-xl mx-auto border border-white/10 rounded-2xl bg-white/5 p-6 reveal">
+                <p class="text-sm text-slate-300 font-light leading-relaxed">
+                    <i data-lucide="info" class="w-4 h-4 inline text-brand-electric mr-1 transform translate-y-[-1px]"></i>
+                    Alle einmaligen Setup-Pakete sind perfekt kombinierbar mit unseren monatlichen Care-Abos – damit deine neue Seite dauerhaft schnell, sicher und aktuell bleibt.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+            <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Die Rundum-Sorglos-Garantie</span>
+            <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight mt-3 mb-6">Monatliche Care-Modelle</h2>
+            <p class="text-brand-muted text-lg font-light">Eine erfolgreiche Website endet nicht mit dem Launch – sie wächst mit deinem Unternehmen.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            <div class="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col justify-between transition-transform duration-300 hover:translate-y-[-4px] reveal">
+                <div>
+                    <h3 class="font-display text-xl font-bold mb-1">Care Basic</h3>
+                    <p class="text-xs text-brand-muted mb-6">Die Grundsicherung, damit im Hintergrund nie etwas brennt.</p>
+                    <div class="mb-6"><span class="text-3xl font-black font-display text-brand-dark">29 €</span> <span class="text-xs text-brand-muted">/ Monat</span></div>
+                    <ul class="space-y-4 text-sm text-brand-muted border-t border-slate-100 pt-6">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> High-Speed Webhosting & Domain</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Tägliche automatisierte Backups</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Kontinuierliche Sicherheits-Updates</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> SSL- & DSGVO-Dauermonitoring</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Bis zu 30 Min. Text- & Bilduploads/Monat</li>
+                    </ul>
+                </div>
+                <a href="#kontakt" class="mt-8 block w-full text-center py-3 px-6 rounded-full bg-slate-100 font-bold text-sm tracking-wide hover:bg-slate-200 transition-colors">Abo wählen</a>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 border-2 border-brand-electric shadow-xl flex flex-col justify-between relative lg:scale-105 z-10 transition-transform duration-300 hover:translate-y-[-4px] reveal">
+                <span class="absolute top-0 right-8 -translate-y-1/2 bg-brand-electric text-white text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full shadow-md">Empfohlen</span>
+                <div>
+                    <h3 class="font-display text-xl font-bold mb-1">Care Plus</h3>
+                    <p class="text-xs text-brand-muted mb-6">Damit deine Seite nicht nur online bleibt, sondern kontinuierlich wächst.</p>
+                    <div class="mb-6"><span class="text-3xl font-black font-display text-brand-electric">79 €</span> <span class="text-xs text-brand-muted">/ Monat</span></div>
+                    <ul class="space-y-4 text-sm text-brand-dark border-t border-slate-100 pt-6">
+                        <li class="flex items-center gap-3 font-semibold text-brand-electric"><i data-lucide="plus" class="w-4 h-4"></i> Alles aus Care Basic</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Bis zu 2 Stunden Änderungen / Monat</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Inhaltspflege (Texte, Bilder, Aktuelles)</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> SEO-Monitoring & kontinuierliche Anpassung</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Monatlicher Performance-Report</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Priorisierter E-Mail-Support</li>
+                    </ul>
+                </div>
+                <a href="#kontakt" class="mt-8 block w-full text-center py-3 px-6 rounded-full bg-brand-electric font-bold text-white text-sm tracking-wide hover:bg-brand-indigo transition-colors shadow-lg shadow-brand-electric/20">Abo wählen</a>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm flex flex-col justify-between transition-transform duration-300 hover:translate-y-[-4px] reveal">
+                <div>
+                    <h3 class="font-display text-xl font-bold mb-1">Care Pro</h3>
+                    <p class="text-xs text-brand-muted mb-6">Für Unternehmen, die das Web als primären Vertriebskanal nutzen.</p>
+                    <div class="mb-6"><span class="text-3xl font-black font-display text-brand-dark">149 €</span> <span class="text-xs text-brand-muted">/ Monat</span></div>
+                    <ul class="space-y-4 text-sm text-brand-muted border-t border-slate-100 pt-6">
+                        <li class="flex items-center gap-3 font-semibold text-brand-indigo"><i data-lucide="plus" class="w-4 h-4"></i> Alles aus Care Plus</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Bis zu 5 Stunden Änderungen / Monat</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Conversion-Optimierung & A/B-Tests</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Strategie-Call per Zoom an jedem Monatsende</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i> Express-Reaktionszeit (innerhalb von 24 Std.)</li>
+                    </ul>
+                </div>
+                <a href="#kontakt" class="mt-8 block w-full text-center py-3 px-6 rounded-full bg-slate-100 font-bold text-sm tracking-wide hover:bg-slate-200 transition-colors">Abo wählen</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-slate-100 border-y border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Kundenstimmen</span>
+                <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight mt-3">Was unsere Kunden sagen</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm relative reveal">
+                    <div class="flex gap-1 text-amber-400 mb-4">
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <blockquote class="text-brand-dark font-light leading-relaxed mb-6">
+                        "Früher musste ich mich selbst um WordPress-Updates kümmern und hatte ständig Angst, dass die Seite abstürzt. Seit wir bei [DEIN STUDIONAME] sind, herrscht absolute Ruhe. Neue Texte schicke ich einfach per Mail – eine Stunde später sind sie online."
+                    </blockquote>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-brand-muted">MK</div>
+                        <div>
+                            <div class="font-bold text-sm">Marcus Krüger</div>
+                            <div class="text-xs text-brand-muted">Geschäftsführer Krüger Bedachungen</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm relative reveal">
+                    <div class="flex gap-1 text-amber-400 mb-4">
+                        <i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i><i data-lucide="star" class="w-5 h-5 fill-current"></i>
+                    </div>
+                    <blockquote class="text-brand-dark font-light leading-relaxed mb-6">
+                        "Unsere neue Webseite sieht nicht nur unglaublich professionell aus, sondern generiert jede Woche 4 bis 5 qualifizierte Anfragen von Neukunden. Das Design hat unsere Erwartungen bei Weitem übertroffen. Uneingeschränkte Empfehlung!"
+                    </blockquote>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center font-bold text-brand-muted">SB</div>
+                        <div>
+                            <div class="font-bold text-sm">Sabine Berger</div>
+                            <div class="text-xs text-brand-muted">Inhaberin Berger Physiotherapie</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-5 relative reveal">
+            <div class="aspect-[4/5] bg-gradient-to-tr from-brand-dark to-slate-800 rounded-3xl shadow-xl border border-slate-200 flex items-center justify-center p-8 text-center text-white/40">
+                <div class="space-y-2">
+                    <i data-lucide="user" class="w-12 h-12 mx-auto stroke-[1]"></i>
+                    <p class="text-xs uppercase font-bold tracking-widest text-slate-400">[ DEIN FOTO / TEAMFOTO ]</p>
+                </div>
+            </div>
+        </div>
+        <div class="lg:col-span-7 space-y-6 reveal">
+            <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Hinter den Kulissen</span>
+            <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight text-brand-dark">Kein anonymer Agentur-Overhead. Dein direkter Partner.</h2>
+            <p class="text-brand-muted text-base font-light leading-relaxed">
+                Große Werbeagenturen berechnen dir oft teure Projektmanager und Overhead-Kosten mit. Bei uns arbeitest du direkt mit den Experten zusammen. Wir kennen die Herausforderungen des deutschen Mittelstands und lokaler Dienstleister ganz genau.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-sm font-medium">
+                <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-electric"></i> Fester, persönlicher Ansprechpartner</div>
+                <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-electric"></i> Serverstandort in Deutschland</div>
+                <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-electric"></i> Transparente Festpreise ohne Extras</div>
+                <div class="flex items-center gap-3"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-electric"></i> Keine monatelangen Wartezeiten</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-brand-electric text-white bg-grain relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-6 text-center space-y-6 relative z-10 reveal">
+            <h2 class="font-display text-2xl sm:text-4xl font-black tracking-tight">100% risikofreies Sicherheitsversprechen</h2>
+            <p class="max-w-2xl mx-auto text-indigo-100 font-light text-sm sm:text-base leading-relaxed">
+                Wir arbeiten erfolgsbasiert und transparent: Das Erstgespräch ist vollkommen unverbindlich. Wir starten erst, wenn du das Design-Konzept liebst. Es gibt keine versteckten Kosten oder böse Überraschungen nach dem Launch.
+            </p>
+        </div>
+    </section>
+
+    <section id="faq" class="py-24 max-w-4xl mx-auto px-6" x-data="{ activeFaq: null }">
+        <div class="text-center mb-16 reveal">
+            <span class="text-sm font-bold text-brand-electric uppercase tracking-widest">Häufige Fragen</span>
+            <h2 class="font-display text-3xl sm:text-5xl font-black tracking-tight mt-3">Häufig gestellte Fragen</h2>
+        </div>
+
+        <div class="space-y-4">
+            <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 1) ? null : 1" class="w-full text-left p-6 font-bold flex justify-between items-center transition-colors hover:text-brand-electric">
+                    <span>Was kostet eine Website bei euch wirklich?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 text-brand-muted" :class="activeFaq === 1 ? 'rotate-180 text-brand-electric' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 1" x-collapse class="px-6 pb-6 text-sm text-brand-muted leading-relaxed" x-cloak>
+                    Du zahlst den einmaligen Setup-Preis deines gewählten Paketes (z. B. 1.890 € für das Business-Paket). Darin sind Konzeption, Design und vollständige technische Umsetzung enthalten. Danach deckt das monatliche Care-Abo alle laufenden Kosten wie Hosting, Lizenzen und Änderungen ab. Alles transparent aufgeschlüsselt.
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 2) ? null : 2" class="w-full text-left p-6 font-bold flex justify-between items-center transition-colors hover:text-brand-electric">
+                    <span>Wie lange dauert der gesamte Prozess?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 text-brand-muted" :class="activeFaq === 2 ? 'rotate-180 text-brand-electric' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 2" x-collapse class="px-6 pb-6 text-sm text-brand-muted leading-relaxed" x-cloak>
+                    Ein einfaches One-Page-System (Starter) steht meistens innerhalb von 7 Tagen bereit. Umfangreichere Firmen-Webseiten (Business) benötigen im Regelschnitt etwa 14 Tage ab Bereitstellung aller Inhalte und Texte von deiner Seite.
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 3) ? null : 3" class="w-full text-left p-6 font-bold flex justify-between items-center transition-colors hover:text-brand-electric">
+                    <span>Gehört die Website nach dem Launch mir?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 text-brand-muted" :class="activeFaq === 3 ? 'rotate-180 text-brand-electric' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 3" x-collapse class="px-6 pb-6 text-sm text-brand-muted leading-relaxed" x-cloak>
+                    Ja, zu 100%. Sobald die Abschlussrechnung beglichen ist, bist du uneingeschränkter Eigentümer aller Design-Rechte, Texte und Quellcodes. Es gibt keine Vendor-Lock-ins oder Knebelverträge.
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 4) ? null : 4" class="w-full text-left p-6 font-bold flex justify-between items-center transition-colors hover:text-brand-electric">
+                    <span>Muss ich das monatliche Care-Abo zwingend abschließen?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 text-brand-muted" :class="activeFaq === 4 ? 'rotate-180 text-brand-electric' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 4" x-collapse class="px-6 pb-6 text-sm text-brand-muted leading-relaxed" x-cloak>
+                    Das Care-Abo ist optional, wird aber von 95% unserer Kunden gewählt. Solltest du das Abo nicht nutzen wollen, übernehmen wir das Hosting nicht und du bist selbst dafür verantwortlich, wöchentliche Updates einzuspielen und Sicherheits-Sicherungen zu erstellen.
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 5) ? null : 5" class="w-full text-left p-6 font-bold flex justify-between items-center transition-colors hover:text-brand-electric">
+                    <span>Sind die Seiten absolut DSGVO-konform?</span>
+                    <i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 text-brand-muted" :class="activeFaq === 5 ? 'rotate-180 text-brand-electric' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 5" x-collapse class="px-6 pb-6 text-sm text-brand-muted leading-relaxed" x-cloak>
+                    Ja. Wir binden Google Fonts ausschließlich lokal ein, nutzen standardmäßig keine externen Tracking-Tools ohne User-Einwilligung und implementieren ein datenschutzkonformes Cookie-Banner. Zudem erhalten alle Seiten eine SSL-Verschlüsselung.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontakt" class="py-24 bg-brand-dark text-white bg-grain border-t border-white/5 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-brand-electric/10 pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 space-y-8 reveal">
+            <span class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-electric">
+                Unverbindliche Anfrage
+            </span>
+            <h2 class="font-display text-4xl sm:text-6xl font-black tracking-tight leading-none">
+                Lass uns dein Projekt <br class="hidden sm:inline">gemeinsam starten.
+            </h2>
+            <p class="text-slate-400 text-lg max-w-xl mx-auto font-light leading-relaxed">
+                Sichere dir jetzt ein kostenloses Erstgespräch. Wir besprechen deine Wünsche und erstellen einen klaren Fahrplan für deine Neukundengewinnung.
+            </p>
+            <div class="pt-4">
+                <a href="mailto:hallo@deinstudioname.de" class="inline-flex items-center justify-center gap-2 rounded-full bg-brand-electric px-10 py-5 font-bold text-lg shadow-xl shadow-brand-electric/20 transition-all hover:bg-brand-indigo hover:translate-y-[-2px]">
+                    Kostenloses Erstgespräch sichern
+                </a>
+            </div>
+            <p class="text-xs text-slate-500 font-medium tracking-wide">
+                ⚠️ Um maximale Qualität zu garantieren, nehmen wir aktuell nur 3 neue Projekte pro Monat an.
+            </p>
+        </div>
+    </section>
+
+    <footer class="bg-brand-dark text-slate-500 text-xs py-12 border-t border-white/5 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <p class="font-display font-bold text-sm text-slate-400 mb-1">[DEIN STUDIONAME]</p>
+                <p>&copy; 2026. Alle Rechte vorbehalten. Hochwertige Webseiten aus Deutschland.</p>
+            </div>
+            <div class="flex flex-wrap gap-6 font-medium text-slate-400">
+                <a href="#" class="hover:text-white transition-colors">Impressum</a>
+                <a href="#" class="hover:text-white transition-colors">Datenschutz</a>
+                <a href="#" class="hover:text-white transition-colors">AGB</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Re-render Lucide icons
+            lucide.createIcons();
+
+            // Intersection Observer for Scroll Reveals
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // Counter Animation logic
+            const counters = document.querySelectorAll('.counter');
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = parseInt(entry.target.getAttribute('data-target'));
+                        let count = 0;
+                        const speed = target / 50; // Dynamic steps
+                        
+                        const updateCount = () => {
+                            if (count < target) {
+                                count += Math.ceil(speed);
+                                if (count > target) count = target;
+                                entry.target.innerText = count;
+                                setTimeout(updateCount, 20);
+                            } else {
+                                entry.target.innerText = target;
+                            }
+                        };
+                        updateCount();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(counter => counterObserver.observe(counter));
+        });
+    </script>
 </body>
 </html>
