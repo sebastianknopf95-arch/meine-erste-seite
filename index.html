@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[DEIN STUDIONAME] | Next-Gen Webdesign & Digitale Automation</title>
-    <meta name="description" content="High-Performance Websites für Marktführer von morgen. Konzept, Entwicklung und dauerhafte Care-Flatrate.">
+    <title>SK-Webdesign | Digitale Wertschöpfung & High-End Webengineering</title>
+    <meta name="description" content="Bespoke Webarchitektur für Marktführer. Maßgeschneiderte Digitalsysteme, kompromissloses Design und intelligente Markenführung.">
     
-    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <!-- Google Fonts: Cormorant Garamond (Luxury Display) & Plus Jakarta Sans (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,29 +20,34 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
+    <!-- Three.js CDN für die interaktive 3D-Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Cormorant Garamond"', 'serif'],
                     },
                     colors: {
-                        brand: {
-                            accent: '#6366F1', /* Electric Indigo */
-                            accentGlow: 'rgba(99, 102, 241, 0.15)',
-                            bgDark: '#09090b', /* Zinc 950 */
-                            cardBg: '#141417',
-                            border: '#27272a' /* Zinc 800 */
+                        luxury: {
+                            bg: '#040406',
+                            card: '#0B0B0F',
+                            border: '#1A1A22',
+                            gold: '#D4AF37',
+                            platinum: '#E5E7EB',
+                            muted: '#8E8E93'
                         }
                     },
                     animation: {
-                        'infinite-scroll': 'scroll 35s linear infinite',
+                        'slow-spin': 'spin 120s linear infinite',
+                        'marquee': 'marquee 50s linear infinite',
                     },
                     keyframes: {
-                        scroll: {
-                            '0%': { transform: 'translateX(0)' },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
                             '100%': { transform: 'translateX(-50%)' },
                         }
                     }
@@ -52,23 +57,27 @@
     </script>
     
     <style>
-        /* Modern Tech Grid Background */
-        .tech-grid {
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+        /* Premium Noise Overlay */
+        .luxury-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3e%3cfilter id='noiseFilter'%3e%3cfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3e%3c/svg%3e");
+        }
+        
+        /* 3D Transform Context */
+        .preserve-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
-        /* Subtle Spotlight Blur */
-        .spotlight {
-            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, rgba(99, 102, 241, 0) 50%);
+        /* Ambient Glow effects */
+        .gold-glow {
+            background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
         }
 
-        /* Scroll Reveal states */
+        /* Scroll Reveal Animation */
         .reveal {
             opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
             opacity: 1;
@@ -76,403 +85,422 @@
         }
     </style>
 </head>
-<body class="bg-brand-bgDark text-zinc-100 font-sans antialiased overflow-x-hidden selection:bg-brand-accent selection:text-white tech-grid relative">
+<body class="bg-luxury-bg text-luxury-platinum font-sans antialiased overflow-x-hidden luxury-noise selection:bg-white selection:text-black">
 
-    <!-- FLOATING BLUR SPOTLIGHTS -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] spotlight pointer-events-none z-0"></div>
+    <!-- 3D CANVAS BACKGROUND FOR HERO -->
+    <div id="canvas-container" class="absolute top-0 left-0 w-full h-screen z-0 pointer-events-none opacity-60"></div>
 
-    <!-- NAVIGATION (Floating Capsule) -->
-    <div class="fixed top-5 left-0 w-full z-50 px-4">
-        <header x-data="{ mobileMenuOpen: false }" class="max-w-5xl mx-auto bg-zinc-900/70 backdrop-blur-xl border border-brand-border/80 rounded-2xl py-3 px-6 flex justify-between items-center transition-all shadow-2xl">
-            <a href="#" class="font-display font-extrabold text-lg tracking-tight hover:opacity-90 transition-opacity">
-                [DEIN<span class="text-brand-accent">STUDIO</span>]
+    <!-- AMBIENT TOP LIGHT -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[800px] gold-glow pointer-events-none z-0"></div>
+
+    <!-- LUXURY NAVIGATION -->
+    <header x-data="{ mobileMenuOpen: false, scrolled: false }" 
+            @scroll.window="scrolled = (window.pageYOffset > 30) ? true : false"
+            :class="scrolled ? 'bg-luxury-bg/80 backdrop-blur-2xl border-b border-luxury-border py-4' : 'bg-transparent py-8'"
+            class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-8 flex justify-between items-center">
+            
+            <!-- BESPOKE SVG LOGO CREATION -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 relative flex items-center justify-center border border-luxury-platinum/30 rounded-lg group-hover:border-white transition-colors duration-500">
+                    <svg class="w-5 h-5 text-luxury-platinum" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 20C4 12 12 4 20 4" stroke-linecap="round"/>
+                        <path d="M4 4C12 4 20 12 20 20" stroke-linecap="round" stroke-dasharray="2 2"/>
+                        <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                    </svg>
+                </div>
+                <span class="font-serif text-lg font-bold tracking-[0.25em] uppercase text-white">
+                    SK<span class="font-sans text-xs font-light tracking-widest text-luxury-muted block -mt-1">Webdesign</span>
+                </span>
             </a>
             
-            <nav class="hidden md:flex items-center space-x-6 text-xs font-medium tracking-wide text-zinc-400">
-                <a href="#vorteile" class="hover:text-zinc-100 transition-colors">Vorteile</a>
-                <a href="#matrix" class="hover:text-zinc-100 transition-colors">Tech-Stack</a>
-                <a href="#prozess" class="hover:text-zinc-100 transition-colors">Prozess</a>
-                <a href="#pricing" class="hover:text-zinc-100 transition-colors">Modelle</a>
-                <a href="#faq" class="hover:text-zinc-100 transition-colors">FAQ</a>
+            <!-- Center Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-10 text-[11px] font-medium tracking-[0.2em] uppercase text-luxury-muted">
+                <a href="#philosophie" class="hover:text-white transition-colors duration-300 relative py-1 group">Philosophie<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="#systeme" class="hover:text-white transition-colors duration-300 relative py-1 group">Systeme<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="#blueprint" class="hover:text-white transition-colors duration-300 relative py-1 group">Blueprint<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="#pricing" class="hover:text-white transition-colors duration-300 relative py-1 group">Investment<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span></a>
+                <a href="#faq" class="hover:text-white transition-colors duration-300 relative py-1 group">FAQ<span class="absolute bottom-0 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full"></span></a>
             </nav>
 
-            <div class="hidden md:flex items-center">
-                <a href="#kontakt" class="rounded-xl bg-zinc-100 px-4 py-2 text-xs font-semibold text-zinc-950 hover:bg-zinc-200 transition-all shadow-sm">
-                    Sprechen wir
+            <!-- Right CTA Button -->
+            <div class="hidden lg:flex items-center">
+                <a href="#intake" class="relative overflow-hidden rounded-full border border-luxury-platinum px-7 py-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-black bg-white transition-all duration-500 hover:bg-transparent hover:text-white group">
+                    <span class="relative z-10">Briefing starten</span>
                 </a>
             </div>
 
             <!-- Mobile Trigger -->
-            <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-zinc-400 hover:text-zinc-100 transition-colors">
-                <i data-lucide="menu" x-show="!mobileMenuOpen" class="w-5 h-5"></i>
-                <i data-lucide="x" x-show="mobileMenuOpen" class="w-5 h-5" x-cloak></i>
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-luxury-platinum hover:text-white">
+                <i data-lucide="align-right" x-show="!mobileMenuOpen" class="w-6 h-6"></i>
+                <i data-lucide="x" x-show="mobileMenuOpen" class="w-6 h-6" x-cloak></i>
             </button>
-        </header>
-
-        <!-- Mobile Menu Navigation -->
-        <div x-show="mobileMenuOpen" x-transition class="md:hidden max-w-5xl mx-auto mt-2 bg-zinc-900 border border-brand-border p-6 rounded-2xl flex flex-col space-y-4 text-sm font-medium shadow-2xl" x-cloak>
-            <a href="#vorteile" @click="mobileMenuOpen = false" class="text-zinc-400 hover:text-zinc-100">Vorteile</a>
-            <a href="#matrix" @click="mobileMenuOpen = false" class="text-zinc-400 hover:text-zinc-100">Tech-Stack</a>
-            <a href="#prozess" @click="mobileMenuOpen = false" class="text-zinc-400 hover:text-zinc-100">Prozess</a>
-            <a href="#pricing" @click="mobileMenuOpen = false" class="text-zinc-400 hover:text-zinc-100">Modelle</a>
-            <a href="#faq" @click="mobileMenuOpen = false" class="text-zinc-400 hover:text-zinc-100">FAQ</a>
-            <a href="#kontakt" @click="mobileMenuOpen = false" class="w-full text-center rounded-xl bg-zinc-100 py-2.5 text-xs font-bold text-zinc-950">Sprechen wir</a>
-        </div>
-    </div>
-
-    <!-- HERO SECTION -->
-    <section class="relative min-h-screen flex items-center pt-40 pb-20 z-10">
-        <div class="max-w-5xl mx-auto px-6 w-full text-center space-y-8">
-            <div class="inline-flex items-center gap-2 bg-zinc-900 border border-brand-border rounded-full px-3 py-1 text-[11px] font-medium tracking-wide text-zinc-400">
-                <span class="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse"></span> Kapazitäten für Q2 geöffnet
-            </div>
-            
-            <h1 class="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-400 max-w-4xl mx-auto leading-[1.1]">
-                High-End Webarchitektur für digitale Marktführer.
-            </h1>
-            
-            <p class="text-zinc-400 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed">
-                Wir konzipieren und entwickeln kompromisslose Webseiten für deutsche KMU. Radikal schnell, absolut rechtssicher und durch unsere Care-Flatrate vollautomatisch gewartet.
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-                <a href="#kontakt" class="group flex items-center justify-center gap-1.5 rounded-xl bg-brand-accent px-6 py-3.5 text-xs font-semibold text-white shadow-lg shadow-brand-accent/20 transition-all hover:bg-indigo-500 hover:scale-[1.01]">
-                    Projekt starten
-                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5"></i>
-                </a>
-                <a href="#pricing" class="flex items-center justify-center rounded-xl bg-zinc-900 border border-brand-border px-6 py-3.5 text-xs font-semibold hover:bg-zinc-800/60 transition-all">
-                    Preise & Pakete
-                </a>
-            </div>
-
-            <!-- Minimalist Tech Specs Bar -->
-            <div class="pt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto border-t border-brand-border/40 text-left">
-                <div>
-                    <div class="text-2xl font-bold tracking-tight text-white"><span class="counter" data-target="100">0</span>%</div>
-                    <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold mt-1">PageSpeed-Score</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold tracking-tight text-white"><span class="counter" data-target="14">0</span> Tage</div>
-                    <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold mt-1">Ø Bereitstellung</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold tracking-tight text-white">Pure Code</div>
-                    <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold mt-1">Keine trägen Baukästen</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold tracking-tight text-white">Hosted in DE</div>
-                    <div class="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold mt-1">100% DSGVO-konform</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- LOGO MARQUEE (Clean Infinite Loop) -->
-    <section class="border-y border-brand-border/60 py-8 bg-zinc-900/30 overflow-hidden relative z-10">
-        <div class="flex w-max items-center animate-infinite-scroll space-x-16 text-[10px] font-bold tracking-[0.3em] text-zinc-600 uppercase">
-            <span>• SCHMIDT INGENIEURE</span> <span>• ARCHITEKTUR STUDIO M</span> <span>• KANZLEI WAGNER</span> <span>• DR. MED. FISCHER</span> <span>• VERTEX DIGITAL</span>
-            <span>• SCHMIDT INGENIEURE</span> <span>• ARCHITEKTUR STUDIO M</span> <span>• KANZLEI WAGNER</span> <span>• DR. MED. FISCHER</span> <span>• VERTEX DIGITAL</span>
-        </div>
-    </section>
-
-    <!-- APPROACH / PROBLEM-SOLUTION -->
-    <section id="vorteile" class="py-28 max-w-5xl mx-auto px-6 relative z-10">
-        <div class="max-w-2xl mb-20 reveal">
-            <div class="text-xs font-semibold text-brand-accent uppercase tracking-wider mb-3">Das Paradigma</div>
-            <h2 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-                Statische Webseiten haben ausgedient.
-            </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 lg:p-8 space-y-4 reveal">
-                <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-400"><i data-lucide="terminal" class="w-4 h-4"></i></div>
-                <h3 class="text-base font-bold text-white">Das Problem klassischer Agenturen</h3>
-                <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed">
-                    Teure Einmalprojekte, die am Tag des Go-Lives veralten. Fehlende Sicherheitsupdates, schleichende Ladezeiten und Systemfehler isolieren dich von deinen potenziellen Kunden.
+        <!-- Mobile Drawer -->
+        <div x-show="mobileMenuOpen" x-transition class="lg:hidden absolute top-full left-0 w-full bg-luxury-bg border-b border-luxury-border p-8 space-y-6 flex flex-col text-sm uppercase tracking-widest text-center" x-cloak>
+            <a href="#philosophie" @click="mobileMenuOpen = false" class="text-luxury-muted hover:text-white">Philosophie</a>
+            <a href="#systeme" @click="mobileMenuOpen = false" class="text-luxury-muted hover:text-white">Systeme</a>
+            <a href="#blueprint" @click="mobileMenuOpen = false" class="text-luxury-muted hover:text-white">Blueprint</a>
+            <a href="#pricing" @click="mobileMenuOpen = false" class="text-luxury-muted hover:text-white">Investment</a>
+            <a href="#faq" @click="mobileMenuOpen = false" class="text-luxury-muted hover:text-white">FAQ</a>
+            <a href="#intake" @click="mobileMenuOpen = false" class="w-full text-center rounded-full bg-white text-black py-4 text-xs font-bold">Briefing starten</a>
+        </div>
+    </header>
+
+    <!-- ULTRA-PREMIUM HERO SECTION -->
+    <section class="relative min-h-screen flex items-center pt-32 pb-20 z-10">
+        <div class="max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-10 space-y-10">
+                
+                <div class="inline-flex items-center gap-3 bg-luxury-card border border-luxury-border rounded-full px-4 py-2 text-[10px] font-medium uppercase tracking-[0.2em] text-luxury-platinum/80">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Exklusive Mandatsannahme für Q3
+                </div>
+                
+                <h1 class="font-serif text-5xl sm:text-7xl lg:text-8xl font-normal tracking-tight text-white leading-[1.05] max-w-5xl">
+                    Wir bauen digitale <br class="hidden md:inline"> Monolithen für <span class="italic font-light text-slate-300">Marktführer</span>.
+                </h1>
+                
+                <p class="text-luxury-muted text-sm sm:text-base max-w-2xl font-light leading-relaxed tracking-wide">
+                    SK-Webdesign entwickelt kompromisslose Web-Infrastrukturen für Unternehmen, die den Unterschied zwischen einer einfachen Webseite und einem digitalen Vermögenswert verstehen. Maßgeschneiderter Code, vollendete Ästhetik und absolute Autonomie.
                 </p>
-            </div>
-            <div class="bg-brand-cardBg border border-brand-accent/30 rounded-2xl p-6 lg:p-8 space-y-4 relative overflow-hidden shadow-xl shadow-brand-accent/5 reveal">
-                <div class="absolute -right-12 -top-12 w-32 h-32 bg-brand-accent/10 rounded-full blur-3xl"></div>
-                <div class="w-8 h-8 rounded-lg bg-brand-accent flex items-center justify-center text-white"><i data-lucide="cpu" class="w-4 h-4"></i></div>
-                <h3 class="text-base font-bold text-white">Die agile Managed-Infrastruktur</h3>
-                <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed">
-                    Wir vereinen state-of-the-art Webentwicklung mit einer permanenten Wartungs-Flatrate. Dein digitales Aushängeschild bleibt technisch fehlerfrei, permanent geschützt und skalierbar.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- BENTO TECH MATRIX -->
-    <section id="matrix" class="py-28 bg-zinc-900/40 border-y border-brand-border relative z-10">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="mb-16 reveal">
-                <div class="text-xs font-semibold text-brand-accent uppercase tracking-wider mb-3">Spezifikationen</div>
-                <h2 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Die Entwicklungs-Matrix.</h2>
-            </div>
-
-            <!-- Bento Layout -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="md:col-span-2 bg-brand-cardBg border border-brand-border rounded-2xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors group reveal">
-                    <div>
-                        <h3 class="text-base font-bold text-white mb-2">Performance-Driven Engineering</h3>
-                        <p class="text-zinc-400 text-xs leading-relaxed max-w-xl">
-                            Minimaler, semantischer Code statt überladener Page-Builder. Das Fundament deiner Seite ist auf extreme Geschwindigkeiten optimiert, was sich unmittelbar positiv auf deine Google-Rankings auswirkt.
-                        </p>
-                    </div>
-                    <div class="mt-6 flex flex-wrap gap-2 text-[10px] font-medium text-zinc-500">
-                        <span class="border border-brand-border px-2.5 py-1 rounded-md bg-zinc-900">Core Web Vitals Max</span>
-                        <span class="border border-brand-border px-2.5 py-1 rounded-md bg-zinc-900">Clean CSS/JS</span>
-                    </div>
-                </div>
-
-                <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors reveal">
-                    <div>
-                        <h3 class="text-base font-bold text-white mb-2">Lokales SEO</h3>
-                        <p class="text-zinc-400 text-xs leading-relaxed">
-                            Präzise strukturierte Daten und saubere Indexierungs-Hierarchien sorgen für maximale Sichtbarkeit bei Suchanfragen in deiner Region.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors reveal">
-                    <div>
-                        <h3 class="text-base font-bold text-white mb-2">DSGVO Isolation</h3>
-                        <p class="text-zinc-400 text-xs leading-relaxed">
-                            Lokale Schrifteneinbindung, verschlüsselte Formulare und rechtssichere Consent-Lösungen eliminieren rechtliche Angriffsflächen vollständig.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="md:col-span-2 bg-brand-cardBg border border-brand-border rounded-2xl p-6 flex flex-col justify-between hover:border-zinc-700 transition-colors group reveal">
-                    <div>
-                        <h3 class="text-base font-bold text-white mb-2">24/7 Continuous Monitoring</h3>
-                        <p class="text-zinc-400 text-xs leading-relaxed">
-                            Unsere Systeme überwachen deine Präsenz rund um die Uhr. Fehler werden automatisiert isoliert und behoben, bevor sie zu Ausfällen führen können.
-                        </p>
-                    </div>
-                    <div class="mt-6 flex flex-wrap gap-2 text-[10px] font-medium text-zinc-500">
-                        <span class="border border-brand-border px-2.5 py-1 rounded-md bg-zinc-900">Uptime Shield</span>
-                        <span class="border border-brand-border px-2.5 py-1 rounded-md bg-zinc-900">Automated Backups</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- WORKFLOW PROCESS -->
-    <section id="prozess" class="py-28 max-w-5xl mx-auto px-6 relative z-10">
-        <div class="mb-20 reveal">
-            <div class="text-xs font-semibold text-brand-accent uppercase tracking-wider mb-3">Phasen</div>
-            <h2 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Der Implementierungs-Prozess</h2>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-            <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 hover:border-zinc-700 transition-colors reveal">
-                <div class="text-xs font-mono text-brand-accent mb-3">01 // AUDIT</div>
-                <h3 class="text-sm font-bold text-white mb-1.5">Strategie & Scope</h3>
-                <p class="text-zinc-400 text-xs leading-relaxed">Zielgruppenanalyse und Definition der Systemarchitektur via Zoom.</p>
-            </div>
-            
-            <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 hover:border-zinc-700 transition-colors reveal">
-                <div class="text-xs font-mono text-brand-accent mb-3">02 // WIRE</div>
-                <h3 class="text-sm font-bold text-white mb-1.5">UI/UX Prototyping</h3>
-                <p class="text-zinc-400 text-xs leading-relaxed">Entwurf des visuellen Systems zur finalen Architektur-Freigabe.</p>
-            </div>
-
-            <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 hover:border-zinc-700 transition-colors reveal">
-                <div class="text-xs font-mono text-brand-accent mb-3">03 // CODE</div>
-                <h3 class="text-sm font-bold text-white mb-1.5">Deployment</h3>
-                <p class="text-zinc-400 text-xs leading-relaxed">Fehlerfreie Programmierung, Optimierung der Assets und Go-Live.</p>
-            </div>
-
-            <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 hover:border-zinc-700 transition-colors reveal">
-                <div class="text-xs font-mono text-brand-accent mb-3">04 // LIVE</div>
-                <h3 class="text-sm font-bold text-white mb-1.5">Care Flatrate</h3>
-                <p class="text-zinc-400 text-xs leading-relaxed">Laufende Instandhaltung, Express-Updates und Hosting-Sicherung.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRICING MATRIX -->
-    <section id="pricing" class="py-28 bg-zinc-900/40 border-y border-brand-border relative z-10">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="text-center max-w-2xl mx-auto mb-20 reveal">
-                <div class="text-xs font-semibold text-brand-accent uppercase tracking-wider mb-3">Kalkulation</div>
-                <h2 class="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-white">Transparente System-Investitionen</h2>
-            </div>
-
-            <!-- Setup Packages -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-                <!-- Box 1 -->
-                <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 flex flex-col justify-between reveal">
-                    <div>
-                        <div class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">Starter System</div>
-                        <div class="text-2xl font-bold text-white tracking-tight">899 €</div>
-                        <div class="text-[10px] text-zinc-500 font-mono mt-0.5">Einmaliges Setup // zzgl. MwSt.</div>
-                        <ul class="space-y-3 text-xs text-zinc-400 mt-6 border-t border-brand-border/60 pt-6">
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> One-Page Architektur</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> Responsive Layout</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> Core DSGVO Engine</li>
-                        </ul>
-                    </div>
-                    <a href="#kontakt" class="mt-8 block w-full text-center py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition-colors text-xs font-semibold">Auswählen</a>
-                </div>
-
-                <!-- Box 2 -->
-                <div class="bg-brand-cardBg border-2 border-brand-accent rounded-2xl p-6 flex flex-col justify-between relative shadow-xl shadow-brand-accent/5 reveal">
-                    <span class="absolute -top-3 right-4 bg-brand-accent text-white text-[9px] font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-md">Standard</span>
-                    <div>
-                        <div class="text-xs font-bold text-zinc-200 uppercase tracking-wider mb-1">Business System</div>
-                        <div class="text-2xl font-bold text-white tracking-tight">1.890 €</div>
-                        <div class="text-[10px] text-zinc-500 font-mono mt-0.5">Einmaliges Setup // zzgl. MwSt.</div>
-                        <ul class="space-y-3 text-xs text-zinc-300 mt-6 border-t border-brand-border/60 pt-6">
-                            <li class="flex items-center gap-2 text-white font-semibold"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> Multi-Page (bis zu 5 Seiten)</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> Regionale SEO-Ausrichtung</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> Erweitere Micro-Interaktionen</li>
-                        </ul>
-                    </div>
-                    <a href="#kontakt" class="mt-8 block w-full text-center py-3 rounded-xl bg-brand-accent hover:bg-indigo-500 transition-colors text-xs font-semibold text-white">Auswählen</a>
-                </div>
-
-                <!-- Box 3 -->
-                <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-6 flex flex-col justify-between reveal">
-                    <div>
-                        <div class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">Premium System</div>
-                        <div class="text-2xl font-bold text-white tracking-tight">3.900 €</div>
-                        <div class="text-[10px] text-zinc-500 font-mono mt-0.5">Einmaliges Setup // zzgl. MwSt.</div>
-                        <ul class="space-y-3 text-xs text-zinc-400 mt-6 border-t border-brand-border/60 pt-6">
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> Custom Brand Concept</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> High-End Animationen</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-accent flex-shrink-0"></i> Funnel Integration</li>
-                        </ul>
-                    </div>
-                    <a href="#kontakt" class="mt-8 block w-full text-center py-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition-colors text-xs font-semibold">Auswählen</a>
-                </div>
-            </div>
-
-            <!-- Care Plans Header -->
-            <div class="text-center max-w-2xl mx-auto mb-12 mt-28 reveal">
-                <h3 class="font-display text-2xl font-bold text-white">Laufende System-Wartung (Care)</h3>
-                <p class="text-zinc-400 text-xs mt-2">Nahtloser Schutz und kontinuierliche Upgrades nach dem Launch.</p>
-            </div>
-
-            <!-- Care Subscription Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
-                <div class="bg-zinc-900 border border-brand-border rounded-2xl p-6 flex flex-col justify-between text-zinc-400 reveal">
-                    <div>
-                        <div class="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1">Care Basic</div>
-                        <div class="text-xl font-bold text-white">29 € <span class="text-xs text-zinc-500 font-normal">/ Mo.</span></div>
-                        <p class="text-[11px] text-zinc-500 mt-2">Essenzielle Sicherheitsupdates & Managed Hosting.</p>
-                    </div>
-                </div>
-                <div class="bg-zinc-900 border-2 border-brand-accent rounded-2xl p-6 flex flex-col justify-between text-zinc-300 relative reveal">
-                    <div>
-                        <div class="text-xs font-bold text-white uppercase tracking-wider mb-1">Care Plus</div>
-                        <div class="text-xl font-bold text-brand-accent">79 € <span class="text-xs text-zinc-500 font-normal">/ Mo.</span></div>
-                        <p class="text-[11px] text-zinc-400 mt-2">Inklusive 2h Inhalts- & Textänderungen pro Monat + SEO Überwachung.</p>
-                    </div>
-                </div>
-                <div class="bg-zinc-900 border border-brand-border rounded-2xl p-6 flex flex-col justify-between text-zinc-400 reveal">
-                    <div>
-                        <div class="text-xs font-bold text-zinc-300 uppercase tracking-wider mb-1">Care Pro</div>
-                        <div class="text-xl font-bold text-white">149 € <span class="text-xs text-zinc-500 font-normal">/ Mo.</span></div>
-                        <p class="text-[11px] text-zinc-500 mt-2">Bis zu 5h Kontingent, Express-Support und permanente Conversion-Optimierung.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ ACCORDION -->
-    <section id="faq" class="py-28 max-w-3xl mx-auto px-6 relative z-10" x-data="{ activeFaq: null }">
-        <div class="mb-16 reveal">
-            <div class="text-xs font-semibold text-brand-accent uppercase tracking-wider mb-3">FAQ</div>
-            <h2 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white">Dokumentation & Klarheit</h2>
-        </div>
-
-        <div class="space-y-2">
-            <!-- Item 1 -->
-            <div class="bg-brand-cardBg border border-brand-border rounded-xl overflow-hidden reveal">
-                <button @click="activeFaq = (activeFaq === 1) ? null : 1" class="w-full text-left p-5 font-semibold text-xs sm:text-sm flex justify-between items-center text-zinc-200 hover:text-white">
-                    <span>Entstehen versteckte Folgekosten?</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform text-zinc-500" :class="activeFaq === 1 ? 'rotate-180 text-brand-accent' : ''"></i>
-                </button>
-                <div x-show="activeFaq === 1" x-collapse x-transition class="px-5 pb-5 text-xs text-zinc-400 leading-relaxed" x-cloak>
-                    Nein. Die Kosten setzen sich transparent aus dem einmaligen Setup-Paket für Design und Code sowie der optionalen, monatlichen Care-Wartungsflatrate zusammen. Alle Posten werden vor Projektstart fixiert.
-                </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="bg-brand-cardBg border border-brand-border rounded-xl overflow-hidden reveal">
-                <button @click="activeFaq = (activeFaq === 2) ? null : 2" class="w-full text-left p-5 font-semibold text-xs sm:text-sm flex justify-between items-center text-zinc-200 hover:text-white">
-                    <span>Wem gehören die Rechte an der Website?</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform text-zinc-500" :class="activeFaq === 2 ? 'rotate-180 text-brand-accent' : ''"></i>
-                </button>
-                <div x-show="activeFaq === 2" x-collapse x-transition class="px-5 pb-5 text-xs text-zinc-400 leading-relaxed" x-cloak>
-                    Nach vollständiger Begleichung der Setup-Rechnung liegen alle Eigentums- und Nutzungsrechte am Quellcode, den Grafiken und Texten vollumfänglich und zeitlich unbegrenzt bei dir.
-                </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="bg-brand-cardBg border border-brand-border rounded-xl overflow-hidden reveal">
-                <button @click="activeFaq = (activeFaq === 3) ? null : 3" class="w-full text-left p-5 font-semibold text-xs sm:text-sm flex justify-between items-center text-zinc-200 hover:text-white">
-                    <span>Wie sicher ist die DSGVO-Konformität?</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform text-zinc-500" :class="activeFaq === 3 ? 'rotate-180 text-brand-accent' : ''"></i>
-                </button>
-                <div x-show="activeFaq === 3" x-collapse x-transition class="px-5 pb-5 text-xs text-zinc-400 leading-relaxed" x-cloak>
-                    Wir implementieren ausschließlich datenschutzkonforme Inhaltsarchitekturen (lokale Fonts, deutsche Serverstandorte, saubere Cookie-Systeme). Damit minimieren wir Abmahnrisiken systemseitig auf ein absolutes Minimum.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TERMINAL CONTACT CTA -->
-    <section id="kontakt" class="py-28 max-w-5xl mx-auto px-6 relative z-10">
-        <div class="bg-brand-cardBg border border-brand-border rounded-2xl p-8 lg:p-12 relative overflow-hidden shadow-2xl">
-            <div class="absolute bottom-0 right-0 w-80 h-80 bg-brand-accent/5 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <div class="max-w-xl space-y-6">
-                <div class="text-xs font-mono text-brand-accent">// TERMINATE TECHNICAL DEBT</div>
-                <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-none">
-                    Bereit für das digitale Next-Level?
-                </h2>
-                <p class="text-zinc-400 text-xs sm:text-sm font-light leading-relaxed">
-                    Sichere dir eine unverbindliche System-Analyse. Wir prüfen deine aktuelle Präsenz auf Performance-Defizite und zeigen dir das exakte Optimierungspotenzial.
-                </p>
-                <div class="pt-4">
-                    <a href="mailto:hallo@deinstudioname.de" class="inline-flex items-center gap-2 rounded-xl bg-zinc-100 px-6 py-3.5 text-xs font-bold text-zinc-950 hover:bg-zinc-200 transition-all shadow-sm">
-                        Strategie-Call initiieren
+                
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="#intake" class="group flex items-center justify-center gap-2 rounded-full bg-white border border-white px-8 py-4 text-xs font-bold uppercase tracking-widest text-black transition-all duration-300 hover:bg-transparent hover:text-white">
+                        Digitale Analyse anfordern
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                    </a>
+                    <a href="#systeme" class="flex items-center justify-center rounded-full bg-transparent border border-luxury-border px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-luxury-card transition-colors">
+                        Systeme explorieren
                     </a>
                 </div>
-                <p class="text-[10px] text-zinc-500 font-medium tracking-wide">
-                    ⚠️ Aktuell maximale Neukundenannahme: 3 Unternehmen pro Monat zur Sicherung der Code-Qualität.
+
+                <!-- Strategic Core Matrices -->
+                <div class="pt-20 border-t border-luxury-border/60 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl">
+                    <div>
+                        <div class="font-serif text-3xl font-light text-white"><span class="counter" data-target="100">0</span>%</div>
+                        <div class="text-[9px] text-luxury-muted uppercase tracking-[0.2em] font-semibold mt-1">Architecture Score</div>
+                    </div>
+                    <div>
+                        <div class="font-serif text-3xl font-light text-white">&lt; 0.4s</div>
+                        <div class="text-[9px] text-luxury-muted uppercase tracking-[0.2em] font-semibold mt-1">Interactive Latency</div>
+                    </div>
+                    <div>
+                        <div class="font-serif text-3xl font-light text-white">Bespoke</div>
+                        <div class="text-[9px] text-luxury-muted uppercase tracking-[0.2em] font-semibold mt-1">Keine Templates</div>
+                    </div>
+                    <div>
+                        <div class="font-serif text-3xl font-light text-white">Full IP</div>
+                        <div class="text-[9px] text-luxury-muted uppercase tracking-[0.2em] font-semibold mt-1">100% Rechteübertragung</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FLOATING GALLERY HEADLINE MARQUEE -->
+    <section class="border-y border-luxury-border bg-luxury-card/30 py-6 overflow-hidden relative z-10">
+        <div class="flex w-max items-center animate-marquee space-x-20 text-[10px] font-medium tracking-[0.4em] text-zinc-500 uppercase font-sans">
+            <span>• SK-WEBDESIGN ENGINEERING</span> <span>• ARCHITECTURAL DIGITAL EXPERIENCE</span> <span>• ZERO VENDOR LOCK-IN</span> <span>• BESPOKE ENTERPRISE CODE</span>
+            <span>• SK-WEBDESIGN ENGINEERING</span> <span>• ARCHITECTURAL DIGITAL EXPERIENCE</span> <span>• ZERO VENDOR LOCK-IN</span> <span>• BESPOKE ENTERPRISE CODE</span>
+        </div>
+    </section>
+
+    <!-- THE PHILOSOPHY: WERT vs. KOSTEN -->
+    <section id="philosophie" class="py-32 max-w-7xl mx-auto px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <div class="lg:col-span-5 space-y-6 reveal">
+                <div class="text-[10px] font-semibold text-luxury-muted uppercase tracking-[0.3em]">// DIE DIFFERENZ</div>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal text-white tracking-tight leading-tight">
+                    Warum eine 10.000 € Instanz die einzig rationale Entscheidung ist.
+                </h2>
+                <p class="text-luxury-muted text-sm font-light leading-relaxed">
+                    Günstige Webseiten kosten Geld. Premium-Systeme generieren Kapital. Eine billige digitale Visitenkarte stößt anspruchsvolle B2B-Kunden und Premium-Klienten ab. Wir bauen digitale Repräsentanzen, die Vertrauen auf Konzernniveau erzeugen, bevor das erste Gespräch stattfindet.
+                </p>
+            </div>
+            
+            <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-luxury-card border border-luxury-border rounded-2xl p-8 space-y-4 reveal">
+                    <span class="font-serif text-xs text-rose-500/80 tracking-widest block font-mono">01 // DIE SCHABLONE</span>
+                    <h3 class="text-base font-medium text-white">Das Standard-Webkonstrukt</h3>
+                    <p class="text-luxury-muted text-xs leading-relaxed font-light">
+                        Zusammengewürfelte WordPress-Baukästen, langsame Ladezeiten und rechtliche Unsicherheiten. Ein System, das permanent Betreuung erfordert und deine Marke unter Wert verkauft.
+                    </p>
+                </div>
+                <div class="bg-luxury-card border border-white/20 rounded-2xl p-8 space-y-4 relative overflow-hidden shadow-2xl reveal">
+                    <span class="font-serif text-xs text-white tracking-widest block font-mono">02 // DER MONOLITH</span>
+                    <h3 class="text-base font-medium text-white">SK-Webdesign Premium-System</h3>
+                    <p class="text-luxury-muted text-xs leading-relaxed font-light">
+                        Nativ gecodete Software-Architektur. Blitzschnelle Skalierung, nahtlose API-Schnittstellen und ein visuelles Gewand, das Marktführerschaft im ersten Frame zementiert.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIGITAL ARCHITECTURE SYTEMS (3D CARD TILT EXPERIENCE) -->
+    <section id="systeme" class="py-32 bg-luxury-card/20 border-y border-luxury-border relative z-10 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-8">
+            
+            <div class="mb-24 text-center max-w-3xl mx-auto reveal">
+                <div class="text-[10px] font-semibold text-luxury-muted uppercase tracking-[0.3em] mb-4">// DIGITALE SPEZIFIKATIONEN</div>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal text-white tracking-tight">Kompromisslose Features inklusive.</h2>
+            </div>
+
+            <!-- 3D Transform Grid Element Triggering JS Logic -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 preserve-3d">
+                
+                <!-- Card 1 -->
+                <div class="tilt-card bg-luxury-card border border-luxury-border rounded-2xl p-8 lg:p-10 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:shadow-2xl reveal">
+                    <div class="space-y-6">
+                        <div class="w-10 h-10 rounded-xl bg-zinc-900 border border-luxury-border flex items-center justify-center text-white"><i data-lucide="layers" class="w-4 h-4"></i></div>
+                        <h3 class="text-xl font-medium text-white">Tailored Brand Systems</h3>
+                        <p class="text-luxury-muted text-xs sm:text-sm leading-relaxed font-light">
+                            Keine vordefinierten Layouts. Jedes Pixel wird präzise anhand deiner Corporate Identity und Conversion-Psychologie konstruiert. Perfekte Usability auf Mobilgeräten und hochauflösenden 4K-Displays.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="tilt-card bg-luxury-card border border-luxury-border rounded-2xl p-8 lg:p-10 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:shadow-2xl reveal">
+                    <div class="space-y-6">
+                        <div class="w-10 h-10 rounded-xl bg-zinc-900 border border-luxury-border flex items-center justify-center text-white"><i data-lucide="link-2" class="w-4 h-4"></i></div>
+                        <h3 class="text-xl font-medium text-white">Seamless API Integration</h3>
+                        <p class="text-luxury-muted text-xs sm:text-sm leading-relaxed font-light">
+                            Wir verknüpfen deine Website direkt mit deinen internen Systemen: CRM, HR-Portalen, ERP-Software oder automatisierten n8n-Workflows. Deine Website arbeitet als aktiver Mitarbeiter.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="tilt-card bg-luxury-card border border-luxury-border rounded-2xl p-8 lg:p-10 flex flex-col justify-between transition-all duration-300 hover:border-white/20 hover:shadow-2xl reveal">
+                    <div class="space-y-6">
+                        <div class="w-10 h-10 rounded-xl bg-zinc-900 border border-luxury-border flex items-center justify-center text-white"><i data-lucide="shield" class="w-4 h-4"></i></div>
+                        <h3 class="text-xl font-medium text-white">Enterprise Legal Protection</h3>
+                        <p class="text-luxury-muted text-xs sm:text-sm leading-relaxed font-light">
+                            Abmahnwellen und Datenschutz-Verstöße sind ausgeschlossen. Wir isolieren Tracker, binden alle Assets (Fonts, Scripts) 100% lokal ein und hosten DSGVO-konform auf Hochsicherheitsservern in Deutschland.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- THE BLUEPRINT: SYSTEMATISCHER ABLAUF -->
+    <section id="blueprint" class="py-32 max-w-7xl mx-auto px-8 relative z-10">
+        <div class="mb-24 reveal">
+            <div class="text-[10px] font-semibold text-luxury-muted uppercase tracking-[0.3em] mb-4">// METHODIK</div>
+            <h2 class="font-serif text-4xl sm:text-5xl font-normal text-white tracking-tight">Der Entstehungsprozess.</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-luxury-card border border-luxury-border rounded-xl p-6 relative group reveal">
+                <div class="font-serif text-5xl font-light text-zinc-800 mb-6 group-hover:text-white transition-colors duration-500">I</div>
+                <h3 class="text-sm font-semibold text-white mb-2 uppercase tracking-wide">Brand Extraction</h3>
+                <p class="text-luxury-muted text-xs leading-relaxed font-light">In einem exklusiven Tiefen-Audit extrahieren wir deine genauen Positionierungsmerkmale und Geschäftsziele.</p>
+            </div>
+            
+            <div class="bg-luxury-card border border-luxury-border rounded-xl p-6 relative group reveal">
+                <div class="font-serif text-5xl font-light text-zinc-800 mb-6 group-hover:text-white transition-colors duration-500">II</div>
+                <h3 class="text-sm font-semibold text-white mb-2 uppercase tracking-wide">Interactive Prototype</h3>
+                <p class="text-luxury-muted text-xs leading-relaxed font-light">Wir entwickeln ein maßgeschneidertes, interaktives UI/UX-System zur visuellen und strategischen Abnahme.</p>
+            </div>
+
+            <div class="bg-luxury-card border border-luxury-border rounded-xl p-6 relative group reveal">
+                <div class="font-serif text-5xl font-light text-zinc-800 mb-6 group-hover:text-white transition-colors duration-500">III</div>
+                <h3 class="text-sm font-semibold text-white mb-2 uppercase tracking-wide">Pure Engineering</h3>
+                <p class="text-luxury-muted text-xs leading-relaxed font-light">Die Architektur wird von Grund auf sauber in Code übersetzt. Für makellose Performance und höchste Sicherheitsstandards.</p>
+            </div>
+
+            <div class="bg-luxury-card border border-luxury-border rounded-xl p-6 relative group reveal">
+                <div class="font-serif text-5xl font-light text-zinc-800 mb-6 group-hover:text-white transition-colors duration-500">IV</div>
+                <h3 class="text-sm font-semibold text-white mb-2 uppercase tracking-wide">Continuous Care</h3>
+                <p class="text-luxury-muted text-xs leading-relaxed font-light">Nach dem Deployment überwachen unsere Algorithmen und Entwickler das System rund um die Uhr.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- INVESTMENT PACKAGES -->
+    <section id="pricing" class="py-32 bg-luxury-card/20 border-y border-luxury-border relative z-10">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center max-w-2xl mx-auto mb-24 reveal">
+                <div class="text-[10px] font-semibold text-luxury-muted uppercase tracking-[0.3em] mb-4">// TRANSPARENTES SYSTEMINVESTMENT</div>
+                <h2 class="font-serif text-4xl sm:text-5xl font-normal text-white tracking-tight">Klar kalkulierte Projektwerte.</h2>
+            </div>
+
+            <!-- Main Setup Matrix -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                <!-- System 1 -->
+                <div class="bg-luxury-card border border-luxury-border rounded-2xl p-8 flex flex-col justify-between reveal">
+                    <div>
+                        <div class="text-[10px] font-bold text-luxury-muted uppercase tracking-wider mb-2">Corporate One</div>
+                        <div class="font-serif text-4xl font-normal text-white tracking-tight">4.500 €</div>
+                        <div class="text-[9px] text-luxury-muted font-mono mt-1">Einmaliges Setup // zzgl. MwSt.</div>
+                        <ul class="space-y-4 text-xs text-luxury-platinum/80 mt-8 border-t border-luxury-border pt-8 font-light">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> High-End One-Page Architektur</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Volle Asset-Lokalisation (DSGVO)</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Lokale SEO-Verankerung</li>
+                        </ul>
+                    </div>
+                    <a href="#intake" class="mt-8 block w-full text-center py-3.5 rounded-full bg-zinc-900 border border-luxury-border hover:border-zinc-700 transition-colors text-xs font-semibold uppercase tracking-widest">Mandat anfragen</a>
+                </div>
+
+                <!-- System 2 (The 10k Master Plan) -->
+                <div class="bg-luxury-card border-2 border-white rounded-2xl p-8 flex flex-col justify-between relative shadow-2xl reveal lg:scale-105 z-10">
+                    <span class="absolute -top-3 right-6 bg-white text-black text-[9px] font-bold tracking-widest uppercase px-3 py-1 rounded-md">Premium Standard</span>
+                    <div>
+                        <div class="text-[10px] font-bold text-white uppercase tracking-wider mb-2">Enterprise Corporate</div>
+                        <div class="font-serif text-5xl font-normal text-white tracking-tight">10.000 €</div>
+                        <div class="text-[9px] text-luxury-muted font-mono mt-1">Einmaliges Setup // zzgl. MwSt.</div>
+                        <ul class="space-y-4 text-xs text-zinc-200 mt-8 border-t border-luxury-border pt-8 font-light">
+                            <li class="flex items-center gap-2 font-semibold text-white"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Vollwertiges mehrseitiges Ökosystem</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Native Schnittstellen- & API-Anbindung</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Komplexe Micro-Interaktionen & 3D-Stile</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Copywriting & visuelle Markenführung inklusive</li>
+                        </ul>
+                    </div>
+                    <a href="#intake" class="mt-8 block w-full text-center py-4 rounded-full bg-white text-black hover:bg-zinc-200 transition-colors text-xs font-bold uppercase tracking-widest shadow-xl">Mandat anfragen</a>
+                </div>
+
+                <!-- System 3 -->
+                <div class="bg-luxury-card border border-luxury-border rounded-2xl p-8 flex flex-col justify-between reveal">
+                    <div>
+                        <div class="text-[10px] font-bold text-luxury-muted uppercase tracking-wider mb-2">Bespoke Ecosystem</div>
+                        <div class="font-serif text-4xl font-normal text-white tracking-tight">Ab 18.000 €</div>
+                        <div class="text-[9px] text-luxury-muted font-mono mt-1">Maßgeschneiderte Software // zzgl. MwSt.</div>
+                        <ul class="space-y-4 text-xs text-luxury-platinum/80 mt-8 border-t border-luxury-border pt-8 font-light">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Custom Webapplikationen</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Cloud-Infrastruktur-Skalierung</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-white flex-shrink-0"></i> Deep AI & Workflow Automation</li>
+                        </ul>
+                    </div>
+                    <a href="#intake" class="mt-8 block w-full text-center py-3.5 rounded-full bg-zinc-900 border border-luxury-border hover:border-zinc-700 transition-colors text-xs font-semibold uppercase tracking-widest">Projekt initiieren</a>
+                </div>
+            </div>
+
+            <!-- Managed Infrastructure (Care) -->
+            <div class="text-center max-w-2xl mx-auto mb-12 mt-32 reveal">
+                <h3 class="font-serif text-2xl font-normal text-white tracking-tight">Sorgenfreie Infrastruktur-Flatrates (Care)</h3>
+                <p class="text-luxury-muted text-xs mt-2 font-light">Wir halten deine Web-Architektur permanent auf dem neuesten technologischen Stand.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch max-w-6xl mx-auto">
+                <div class="bg-luxury-card border border-luxury-border rounded-xl p-6 flex flex-col justify-between text-luxury-muted reveal">
+                    <div>
+                        <div class="text-[10px] font-bold text-zinc-300 uppercase tracking-wider mb-1">Infrastructure Basic</div>
+                        <div class="font-serif text-2xl font-light text-white">49 € <span class="text-xs text-luxury-muted font-normal">/ Monat</span></div>
+                        <p class="text-[11px] text-luxury-muted mt-2 font-light">Hochgeschwindigkeits-Hosting, SSL, tägliche Backups & Software-Updates.</p>
+                    </div>
+                </div>
+                <div class="bg-luxury-card border border-zinc-500 rounded-xl p-6 flex flex-col justify-between text-zinc-300 relative reveal">
+                    <div>
+                        <div class="text-[10px] font-bold text-white uppercase tracking-wider mb-1">Infrastructure Executive</div>
+                        <div class="font-serif text-2xl font-light text-white">129 € <span class="text-xs text-luxury-muted font-normal">/ Monat</span></div>
+                        <p class="text-[11px] text-luxury-muted mt-2 font-light">Inklusive 2 Stunden Kontingent für Text-/Bildänderungen & permanentes SEO-Tuning.</p>
+                    </div>
+                </div>
+                <div class="bg-luxury-card border border-luxury-border rounded-xl p-6 flex flex-col justify-between text-luxury-muted reveal">
+                    <div>
+                        <div class="text-[10px] font-bold text-zinc-300 uppercase tracking-wider mb-1">Infrastructure Elite</div>
+                        <div class="font-serif text-2xl font-light text-white">249 € <span class="text-xs text-luxury-muted font-normal">/ Monat</span></div>
+                        <p class="text-[11px] text-luxury-muted mt-2 font-light">Bis zu 5 Stunden monatliches Kontingent, Express-Reaktion binnen 12 Stunden & vierteljährliche Strategie-Analysen.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ELITE INTELLECTUAL FAQ -->
+    <section id="faq" class="py-32 max-w-3xl mx-auto px-8 relative z-10" x-data="{ activeFaq: null }">
+        <div class="mb-20 reveal">
+            <div class="text-[10px] font-semibold text-luxury-muted uppercase tracking-[0.3em] mb-4">// RESTKLARHEIT</div>
+            <h2 class="font-serif text-3xl sm:text-4xl font-normal text-white tracking-tight">Häufig gestellte Fragen.</h2>
+        </div>
+
+        <div class="space-y-3">
+            <div class="bg-luxury-card border border-luxury-border rounded-xl overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 1) ? null : 1" class="w-full text-left p-6 font-medium text-xs sm:text-sm flex justify-between items-center text-zinc-200 hover:text-white transition-colors">
+                    <span>Warum ist SK-Webdesign teurer als klassische Agenturen?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform text-luxury-muted" :class="activeFaq === 1 ? 'rotate-180 text-white' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 1" x-collapse x-transition class="px-6 pb-6 text-xs text-luxury-muted leading-relaxed font-light" x-cloak>
+                    Wir programmieren Individualsoftware statt fertige Themes zu modifizieren. Das bedeutet für dich: Unbegrenzte gestalterische Freiheit, Ladezeiten im Millisekundenbereich und ein Digitalsystem, das perfekt mit deinen geschäftlichen Workflows skaliert.
+                </div>
+            </div>
+
+            <div class="bg-luxury-card border border-luxury-border rounded-xl overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 2) ? null : 2" class="w-full text-left p-6 font-medium text-xs sm:text-sm flex justify-between items-center text-zinc-200 hover:text-white transition-colors">
+                    <span>Wie läuft die Übertragung der Rechte ab?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform text-luxury-muted" :class="activeFaq === 2 ? 'rotate-180 text-white' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 2" x-collapse x-transition class="px-6 pb-6 text-xs text-luxury-muted leading-relaxed font-light" x-cloak>
+                    Nach Ausgleich der Abschlussrechnung gehen alle geistigen Eigentumsrechte, Quellcodes und Design-Assets vollumfänglich und zeitlich unbegrenzt auf dein Unternehmen über. Es gibt keinerlei Lizenz- oder Systemabhängigkeiten.
+                </div>
+            </div>
+
+            <div class="bg-luxury-card border border-luxury-border rounded-xl overflow-hidden reveal">
+                <button @click="activeFaq = (activeFaq === 3) ? null : 3" class="w-full text-left p-6 font-medium text-xs sm:text-sm flex justify-between items-center text-zinc-200 hover:text-white transition-colors">
+                    <span>Ist die Integration bestehender Systeme garantiert?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform text-luxury-muted" :class="activeFaq === 3 ? 'rotate-180 text-white' : ''"></i>
+                </button>
+                <div x-show="activeFaq === 3" x-collapse x-transition class="px-6 pb-6 text-xs text-luxury-muted leading-relaxed font-light" x-cloak>
+                    Ja. Da wir die Systeme von Grund auf nativ entwickeln, können wir jede offene REST-API (z. B. HubSpot, Salesforce, benutzerdefinierte ERPs oder Automations-Server) exakt und hochsicher anbinden.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HIGH-CONVERTING INTAKE BRIEFING PORTAL -->
+    <section id="intake" class="py-32 max-w-5xl mx-auto px-8 relative z-10">
+        <div class="bg-luxury-card border border-luxury-border rounded-3xl p-8 lg:p-16 relative overflow-hidden shadow-2xl">
+            <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-zinc-900 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="max-w-2xl space-y-8">
+                <div class="text-[10px] font-semibold text-luxury-muted uppercase tracking-[0.3em]">// MANDATS-AUDIT</div>
+                <h2 class="font-serif text-4xl sm:text-6xl font-normal text-white tracking-tight leading-none">
+                    Lass uns Großes erschaffen.
+                </h2>
+                <p class="text-luxury-muted text-xs sm:text-sm font-light leading-relaxed">
+                    Fordere eine diskrete, unverbindliche Analyse deiner aktuellen Web-Infrastruktur an. Wir identifizieren ungenutzte Hebel und konzipieren den exakten Fahrplan für dein Premium-System.
+                </p>
+                
+                <div class="pt-6">
+                    <a href="mailto:briefing@sk-webdesign.de" class="inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-xs font-bold uppercase tracking-widest text-black hover:bg-transparent hover:text-white border border-white transition-all shadow-lg">
+                        Bespoke Briefing terminieren
+                    </a>
+                </div>
+                
+                <p class="text-[10px] text-luxury-muted font-medium tracking-wide">
+                    ⚠️ Zur Qualitätssicherung nehmen wir streng limitiert maximal 2 Großprojekte pro Monat an.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-brand-bgDark text-zinc-600 text-[11px] py-12 border-t border-brand-border/60 relative z-10">
-        <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div>
-                <p class="font-display font-bold text-zinc-400 tracking-tight mb-0.5">[DEIN STUDIONAME]</p>
-                <p>&copy; 2026. Alle Rechte vorbehalten. Premium Webengineering & Managed Infrastructure.</p>
+    <!-- REFINED FOOTER -->
+    <footer class="bg-luxury-bg text-luxury-muted text-[11px] py-16 border-t border-luxury-border relative z-10">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div class="text-center sm:text-left">
+                <p class="font-serif font-bold text-sm text-white tracking-[0.2em] uppercase mb-1">SK-Webdesign</p>
+                <p class="font-light tracking-wide">&copy; 2026. Alle Rechte vorbehalten. High-End Webengineering & Custom Solutions.</p>
             </div>
-            <div class="flex gap-4 font-medium text-zinc-500">
-                <a href="#" class="hover:text-zinc-300 transition-colors">Impressum</a>
-                <a href="#" class="hover:text-zinc-300 transition-colors">Datenschutz</a>
+            <div class="flex gap-6 font-medium uppercase tracking-widest text-[10px]">
+                <a href="#" class="hover:text-white transition-colors">Impressum</a>
+                <a href="#" class="hover:text-white transition-colors">Datenschutz</a>
             </div>
         </div>
     </footer>
 
-    <!-- INTERACTION CONTROLLER -->
+    <!-- INTERACTION LOGIC & 3D ENGINE INITIATION -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Render Icons
+            // Render Lucide Icons
             lucide.createIcons();
 
-            // Intersection Observer for Modern Smooth Reveal
+            // 1) REVEAL ANIMATIONS ON SCROLL
             const revealElements = document.querySelectorAll('.reveal');
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -481,25 +509,23 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.02, rootMargin: '0px 0px -20px 0px' });
-
+            }, { threshold: 0.01, rootMargin: '0px 0px -30px 0px' });
             revealElements.forEach(el => revealObserver.observe(el));
 
-            // Fast Numerical Counter Engine
+            // 2) NUMERICAL COUNTER LOGIC
             const counters = document.querySelectorAll('.counter');
             const counterObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const target = parseInt(entry.target.getAttribute('data-target'));
                         let count = 0;
-                        const step = target / 30;
-                        
+                        const step = target / 40;
                         const run = () => {
                             if (count < target) {
                                 count += Math.ceil(step);
                                 if (count > target) count = target;
                                 entry.target.innerText = count;
-                                setTimeout(run, 20);
+                                setTimeout(run, 25);
                             } else {
                                 entry.target.innerText = target;
                             }
@@ -508,9 +534,96 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.1 });
-
+            }, { threshold: 0.05 });
             counters.forEach(counter => counterObserver.observe(counter));
+
+            // 3) NATIVE INTERACTIVE 3D CARDS (TILT EFFECT)
+            const cards = document.querySelectorAll('.tilt-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const xc = rect.width / 2;
+                    const yc = rect.height / 2;
+                    
+                    const angleX = (yc - y) / 12;
+                    const angleY = (x - xc) / 12;
+                    
+                    card.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0px)';
+                });
+            });
+
+            // 4) THREE.JS 3D INTERACTIVE ENGINE ENGINE (HERO)
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Create luxurious 3D Geometry (Particle Constellation Matrix)
+            const particleCount = 280;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+
+            for(let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 12; // X
+                positions[i+1] = (Math.random() - 0.5) * 8; // Y
+                positions[i+2] = (Math.random() - 0.5) * 6; // Z
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            
+            // Material styling (Soft glowing digital nodes)
+            const material = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.025,
+                transparent: true,
+                opacity: 0.4
+            });
+
+            const particleSystem = new THREE.Points(geometry, material);
+            scene.add(particleSystem);
+            camera.position.z = 4;
+
+            // Mouse Move Interaction variables
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth) - 0.5;
+                mouseY = (event.clientY / window.innerHeight) - 0.5;
+            });
+
+            // Fluid Animation Loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Gentle baseline rotation
+                particleSystem.rotation.y += 0.001;
+                particleSystem.rotation.x += 0.0005;
+
+                // Dynamic easing towards mouse orientation
+                particleSystem.rotation.y += (mouseX * 0.4 - particleSystem.rotation.y) * 0.05;
+                particleSystem.rotation.x += (mouseY * 0.4 - particleSystem.rotation.x) * 0.05;
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Responsive Window Scaling for 3D Elements
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
         });
     </script>
 </body>
