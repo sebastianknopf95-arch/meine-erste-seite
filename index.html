@@ -10,12 +10,11 @@
 =================================================================
   KNOPF DIGITAL – Studio-Website (eigenständig, DSGVO-sauber)
   - KEINE externen Schriften / CDNs -> keine US-Datenübertragung
-  - Echtes Kontaktformular über Netlify -> E-Mail an dich
+  - Kontaktformular DSGVO-konform per mailto (kein Drittanbieter, kein Server)
   - Platzhalter sind mit "PLATZHALTER" markiert
-  WICHTIG (Formular): Anfragen landen automatisch in Netlify und
-  werden an deine E-Mail geschickt, SOBALD du in Netlify einstellst:
-  Project configuration -> Forms -> Notifications -> "Email notification"
-  -> Empfänger: Seb.kn95@gmail.com
+  FORMULAR: Beim Absenden öffnet sich das Mailprogramm des Besuchers mit einer
+  vorausgefüllten Nachricht an Seb.kn95@gmail.com. Es werden keine Daten an
+  fremde Server übertragen. (Funktioniert auf jedem Hosting – auch statisch.)
 =================================================================
 -->
 
@@ -648,13 +647,15 @@ form .btn-primary{width:100%;border:none;font-size:16px;padding:15px;}
     </div>
 
     <!--
-      Netlify-Formular: Anfragen landen automatisch in Netlify
-      und werden an deine E-Mail geschickt, sobald du die
-      E-Mail-Benachrichtigung in Netlify auf Seb.kn95@gmail.com stellst.
+      DSGVO-konformes Kontaktformular OHNE Drittanbieter:
+      Beim Absenden baut das Skript unten aus den Eingaben eine vorausgefüllte
+      E-Mail und öffnet sie im Mailprogramm des Besuchers (mailto). Es werden
+      KEINE Daten an fremde Server übertragen. Empfänger: Seb.kn95@gmail.com
     -->
-    <form name="anfrage" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/danke.html" class="reveal">
-      <input type="hidden" name="form-name" value="anfrage" />
-      <p hidden><label>Bitte leer lassen: <input name="bot-field" /></label></p>
+    <form id="anfrageForm" class="reveal"
+          action="mailto:Seb.kn95@gmail.com" method="post" enctype="text/plain">
+      <!-- Honeypot gegen einfache Bots (für Menschen unsichtbar) -->
+      <p hidden><label>Bitte leer lassen: <input name="website" tabindex="-1" autocomplete="off" /></label></p>
       <div class="field">
         <label for="name">Name</label>
         <input id="name" type="text" name="name" required autocomplete="name" />
@@ -677,7 +678,7 @@ form .btn-primary{width:100%;border:none;font-size:16px;padding:15px;}
         <textarea id="nachricht" name="nachricht" required placeholder="Ein paar Sätze zu deinem Vorhaben genügen."></textarea>
       </div>
       <button class="btn btn-primary" type="submit">Anfrage senden</button>
-      <p class="form-hint">Mit dem Absenden stimmst du der Verarbeitung deiner Angaben zur Bearbeitung der Anfrage zu.</p>
+      <p class="form-hint" id="formHint">Mit dem Absenden stimmst du der Verarbeitung deiner Angaben zur Bearbeitung der Anfrage zu. Es öffnet sich dein E-Mail-Programm mit der fertigen Nachricht – einmal auf „Senden“ tippen.</p>
     </form>
   </div>
 </section>
@@ -798,6 +799,33 @@ form .btn-primary{width:100%;border:none;font-size:16px;padding:15px;}
     }
     size(); init(); draw();
     window.addEventListener('resize', function(){ size(); init(); });
+  }
+
+  /* Kontaktformular: DSGVO-konform per mailto (keine Drittanbieter, kein Server) */
+  var anfrageForm = document.getElementById('anfrageForm');
+  if(anfrageForm){
+    anfrageForm.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      /* Honeypot: ausgefüllt = Bot -> still abbrechen */
+      var hp = anfrageForm.querySelector('input[name="website"]');
+      if(hp && hp.value){ return; }
+      var val = function(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+      var name = val('name'), email = val('email'), paket = val('paket'), nachricht = val('nachricht');
+      var betreff = 'Anfrage über die Website' + (name ? ' von ' + name : '');
+      var body = [
+        'Name: ' + name,
+        'E-Mail: ' + email,
+        'Interesse an: ' + paket,
+        '',
+        'Nachricht:',
+        nachricht
+      ].join('\n');
+      window.location.href = 'mailto:Seb.kn95@gmail.com'
+        + '?subject=' + encodeURIComponent(betreff)
+        + '&body=' + encodeURIComponent(body);
+      var hint = document.getElementById('formHint');
+      if(hint){ hint.textContent = 'Dein E-Mail-Programm öffnet sich mit der fertigen Nachricht – bitte nur noch auf „Senden“ klicken. Falls nicht, schreib direkt an Seb.kn95@gmail.com.'; }
+    });
   }
 })();
 </script>
